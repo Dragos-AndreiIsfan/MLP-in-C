@@ -1,0 +1,106 @@
+#ifndef __MATRIX_H__
+#define __MATRIX_H__
+
+#include <stdio.h>
+#include <stdint.h>
+#include <errno.h>
+#include <string.h>
+
+typedef struct{
+    double *data;
+    uint16_t rows;
+    uint16_t columns;
+}matrix;
+
+//STANDARD MATRIX ALLOCATION AND FILLING
+matrix *alloc_matrix(uint16_t rows, uint16_t columns);
+void fill_matrix(matrix *A, double *data);
+void fill_matrix_ones(matrix *A);
+void fill_matrix_zeros(matrix *A);
+
+void print_matrix(matrix *A);
+
+matrix *matadd(matrix *A, matrix *B);
+matrix *matmul(matrix *A, matrix *B);
+matrix *hadamardProduct(matrix *A, matrix *B);
+
+void dealloc_matrix(matrix *A);
+
+#ifdef MATRIX_LIB_IMPLEMENTATION
+
+matrix *alloc_matrix(uint16_t rows, uint16_t columns){
+    matrix *A = (matrix*)malloc(sizeof(matrix));
+    if(A == NULL){
+        fprintf(stderr,"\033[2;49;91mMALLOC FAIL:%s\033[0m\n",strerror(errno));
+        return NULL;
+    }
+    A->rows = rows;
+    A->columns = columns;
+    A->data = (double*)malloc(sizeof(double)*rows*columns);
+    if(A->data == NULL){
+        fprintf(stderr,"\033[2;49;91mMALLOC FAIL:%s\033[0m\n",strerror(errno));
+        free(A);
+        return NULL;
+    }
+    return A;
+}
+
+void fill_matrix_ones(matrix *A){
+    for(int i=0;i<A->rows;i++){
+        for(int j=0;j<A->columns;j++){
+            A->data[i*A->columns + j] = 1;
+        }
+    }
+}
+
+void fill_matrix_zeros(matrix *A){
+    for(int i = 0;i<A->rows;i++){
+        for(int j=0;j<A->columns;j++){
+            A->data[i*A->columns + j] = 0;
+        }
+    }
+}
+
+void fill_matrix(matrix *A, double *data){
+    for(int i=0;i<A->rows;i++){
+        for(int j=0;j<A->columns;j++){
+            A->data[i*A->columns+j] = data[i*A->columns+j];
+        }
+    }
+}
+
+matrix *hadamardProduct(matrix *A, matrix *B){
+    if(A->rows != B->rows || A->columns != B->columns){
+        fprintf(stderr,"\033[1;49;91mERROR: The matrices in given for hadamard product do not have the same size!\033[0m\n");
+        return NULL;
+    }
+    uint16_t rows = A->rows;uint16_t columns = B->columns;
+    matrix *C = alloc_matrix(rows,columns);
+    if(C == NULL){
+        return NULL;
+    }
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<columns;j++){
+            C->data[i*columns+j] = A->data[i*columns+j]*B->data[i*columns+j];
+        }
+    }
+    return C;
+}
+
+void print_matrix(matrix *A){
+    for(int i=0;i<A->rows;i++){
+        for(int j=0;j<A->columns;j++){
+            printf("%lf ",A->data[i*A->columns+j]);
+        }
+        printf("\n");
+    }
+}
+
+void dealloc_matrix(matrix *A){
+    free(A->data);
+    free(A);
+}
+
+#endif
+
+#endif
