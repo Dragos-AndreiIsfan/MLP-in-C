@@ -9,8 +9,18 @@
 //the library for MLP functionality
 //like ReLU, forward pass, backpropagation, etc..
 
+/*ReLU function, defined as max{0,x} = ReLU(x).
+Applied to a matrix, will apply to each entry of the matrix.*/
 void ReLU(matrix *A);
+
+/*Though discontinuous, we define the derivative of ReLU, ReLU' as:
+ReLU'(x) = [1 if x > 0; 0 if x <= 0].
+Applied to a matrix, will apply to every matrix entry.*/
 void ReLU_derivative(matrix *A);
+
+/*Softmax function, defined as:
+softmax(z_i;z) = exp(z_i)/sum(exp(z_j),for j = 0 to N-1).
+Where z is a vector in R^N, j is the index starting from 0.*/
 double *softmax(double *vector,uint32_t size);
 
 #ifdef MLP_LIB_IMPLEMENTATION

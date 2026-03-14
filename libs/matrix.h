@@ -15,21 +15,55 @@ typedef struct{
 }matrix;
 
 //STANDARD MATRIX ALLOCATION AND FILLING WITH ZEROS,ONES OR A SPECIFIC ARRAY
+
+/*Function that allocates memory for a matrix, 
+it takes as input the rows and columns that are going to
+be forming the matrix.
+WARNING!: ALWAYS MAKE SURE YOU DEALLOC THE MATRIX AT THE END 
+OF THE PROGRAM, THERE IS AN ALREADY DEFINED FUNCTION FOR THIS CALLED 
+dealloc_matrix() that takes as input the matrix to be dealloc'ed.*/
 matrix *alloc_matrix(uint16_t rows, uint16_t columns);
+
+/*Fill matrix is a function that will fill the given matrix
+as input with the values stored in the data array of doubles.
+CAUTION: IT IS REQUIRED AND IN THE HANDS OF THE PROGRAMMER THAT 
+THE NUMBER OF ELEMENTS OF THE MATRIX ARE EQUAL TO THE 
+NUMBER OF ELEMENTS IN THE ARRAY OF DOUBLES, THE FUNCTION DOES 
+NOT CHECK SIZE, NEITHER TAKES AS A PARAMETER THE SIZE OF THE ARRAY, SINCE 
+IT ASSUMES THAT THE MATRIX HAS THE SAME AMOUNT OF ELEMENTS AS THE 
+ARRAY OF DOUBLES.
+THE MATRIX MUST BE ALLOCED AND IT'S SIZE NEEDS TO BE SET BEFORE USING 
+THIS FUNCTION, OTHERWISE UNDEFINED BEHAVIOUR MAY OCCUR. */
 void fill_matrix(matrix *A, double *data);
+
+/*A function that takes as input a matrix, and assigns each entry 
+with the value 1.*/
 void fill_matrix_ones(matrix *A);
+
+/*Fills the matrix given as input with the value 0.*/
 void fill_matrix_zeros(matrix *A);
 
 void print_matrix(matrix *A);
 
 //MATRIX OPERATIONS LIKE ADDITION, HADAMARD PRODUCT, MULTIPLICATION
 
-
+/*Standard matrix additon, C_{i,j} = A_{i,j} + B_{i,j}.
+The functions checks if the shapes of the matrices 
+A,B,C are the same, if not, it prints an error to stderr, then 
+returns, since it is void, it returns nothing, use cautiously.*/
 void matadd(matrix *A, matrix *B,matrix *C);
+
+/*Matrix multiplication, so far not implemented, thinking of 
+the way to do it.*/
 void matmul(matrix *A, matrix *B,matrix *C);
+
+/*Hadamard Product, or element-wise mutliplication, it is just like 
+matrix addition, but instead of adding the entries (i,j) of the matrices A,B
+, we multiply them and store them in matrix C. Just like with addition, it prints an 
+error to stderr when matrices are not the same shape and returns nothing. Use with caution.*/
 void hadamardProduct(matrix *A, matrix *B,matrix *C);
 
-
+/*Always make sure you free the memory you use.*/
 void dealloc_matrix(matrix *A);
 
 #ifdef MATRIX_LIB_IMPLEMENTATION
