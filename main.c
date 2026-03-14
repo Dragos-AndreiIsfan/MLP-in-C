@@ -10,54 +10,13 @@
 
 int main(){
 
-    matrix *A = alloc_matrix(3,3);
-    if(A == NULL){
-        exit(1);
+    double vec[] = {2.1,-1.5,2.6,1.07,2.88,9.15,0.2525251,2.211};
+    double *probs = softmax(vec,8);
+    double sum = 0;
+    for(int i=0;i<8;i++){
+        printf("%e ",probs[i]);
+        sum += probs[i];
     }
-
-    matrix *B = alloc_matrix(3,3);
-
-    if(B==NULL){
-        dealloc_matrix(A);
-        exit(1);
-    }   
-    
-    double dataA[3*3];
-    double dataB[3*3];
-
-    for(int i=0;i<3;i++){
-        for(int j=0;j<3;j++){
-            dataA[i*3+j] = i+j-1;
-            dataB[i*3+j] = i*j+2*i/(j+1);
-        }
-    }
-
-    fill_matrix(A,dataA);
-    fill_matrix(B,dataB);
-
-    ReLU(A);
-
-    print_matrix(A);
-    printf("\n\n");
-
-    ReLU(B);
-    print_matrix(B);
-    printf("\n\n");
-    matrix *C = hadamardProduct(A,B);
-    
-    if(C == NULL){
-        dealloc_matrix(A);
-        dealloc_matrix(B);
-        exit(1);
-    }
-
-    ReLU_derivative(C);
-
-    print_matrix(C);
-
-    dealloc_matrix(A);
-    dealloc_matrix(B);
-    dealloc_matrix(C);    
-
+    printf("\nSum = %lf\n",sum);
     return 0;
 }
