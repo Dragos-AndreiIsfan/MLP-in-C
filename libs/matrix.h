@@ -93,11 +93,11 @@ void matadd(matrix *A, matrix *B,matrix *C){
     //not allocate space for another matrix
     if(A->rows != B->rows || A->columns != B->columns){
         fprintf(stderr,"\033[1;49;91mERROR: The matrices to be added do not have the same size!\033[0m\n");
-        return NULL;
+        return ;
     }
     uint16_t rows = A->rows;uint16_t columns = B->columns;
     if(C == NULL){
-        return NULL;
+        return ;
     }
     for(int i=0;i<rows;i++){
         for(int j=0;j<columns;j++){
@@ -110,18 +110,31 @@ void matadd(matrix *A, matrix *B,matrix *C){
 void hadamardProduct(matrix *A, matrix *B,matrix *C){
     if(A->rows != B->rows || A->columns != B->columns){
         fprintf(stderr,"\033[1;49;91mERROR: The matrices given for hadamard product do not have the same size!\033[0m\n");
-        return NULL;
+        return ;
     }
     uint16_t rows = A->rows;uint16_t columns = B->columns;
     if(C == NULL){
-        return NULL;
+        return ;
     }
     for(int i=0;i<rows;i++){
         for(int j=0;j<columns;j++){
             C->data[i*columns+j] = A->data[i*columns+j]*B->data[i*columns+j];
         }
     }
-    return C;
+    
+}
+
+void matmul(matrix *A, matrix *B, matrix *C){
+    
+    //Assume A is n by m and B is m by p, then
+    //the matrix C will be n by p
+    if(A->columns != B->rows || (C->columns != B->columns && C->rows != A->rows)){
+        fprintf(stderr,"\033[1;49;91mERROR: The matrices of size (%hu,%hu) and (%hu,%hu) given for matrix multiplication, either do not have the same size or the result matrix of size (%hu,%hu) does not fit (%hu,%hu)!\033[0m\n",A->rows,A->columns,B->rows,B->columns,C->rows,C->columns,A->rows,B->columns);
+        return ;
+    }
+
+    //To Be Implemented...
+
 }
 
 void print_matrix(matrix *A){
